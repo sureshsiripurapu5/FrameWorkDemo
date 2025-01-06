@@ -5,10 +5,8 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +27,15 @@ public class BaseTest {
         driver.get("https://www.saucedemo.com/");
     }
 
-    @BeforeMethod
+    @AfterMethod
+    public void getScreenshotIfTestFails(ITestResult iTestResult) throws IOException {
+        System.out.println("iTestResult.getStatus()::"+iTestResult.getStatus());
+        System.out.println("ITestResult.FAILURE::"+ITestResult.FAILURE);
+        if (iTestResult.getStatus()==ITestResult.FAILURE){
+            takingScreenshot();
+        }
+
+    }
     public void takingScreenshot() throws IOException {
         TakesScreenshot takesScreenshot=(TakesScreenshot) driver;
         File sourceFile=takesScreenshot.getScreenshotAs(OutputType.FILE);
